@@ -4,25 +4,15 @@
 package automation.api.test;
 
 import automation.api.domain.User;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
 
-public class UserTest {
-
-    @BeforeClass
-    public static void setup() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-        baseURI = "https://reqres.in";
-        basePath = "/api";
-    }
+public class UserTest extends BaseTest {
 
     @Test public void testListUserData() {
         given().
@@ -36,7 +26,9 @@ public class UserTest {
     }
 
     @Test public void testCreateUser() {
-        User user = new User("morpheus", "leader" );
+        User user = new User();
+        user.setName("morpheus");
+        user.setJob("leader");
         given().
                 contentType(ContentType.JSON).
                body(user).
