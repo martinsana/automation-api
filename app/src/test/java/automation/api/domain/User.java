@@ -1,10 +1,18 @@
 package automation.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
+
+    @JsonAlias("first_name")
     private String name;
     private String job;
     private String email;
     private String password;
+    @JsonAlias("last_name")
+    private String lastName;
 
     public User(){
     }
@@ -45,5 +53,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

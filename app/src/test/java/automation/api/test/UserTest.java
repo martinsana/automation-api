@@ -8,13 +8,14 @@ import org.apache.http.HttpStatus;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class UserTest extends BaseTest {
 
     private static final String LIST_USER_ENDPOINT = "/users";
     private static final String CREATE_USER_ENDPOINT = "/users";
+    private static final String GET_SINGLE_USER_ENDPOINT = "/users/{userId}";
 
 
     @Test public void testListUserData() {
@@ -59,6 +60,23 @@ public class UserTest extends BaseTest {
                 );
 
     }
+
+    @Test public void getSingleUser() {
+        User user = given().
+                pathParam("userId", 2).
+        when().
+                get(GET_SINGLE_USER_ENDPOINT).
+        then().
+                statusCode(HttpStatus.SC_OK).
+        extract().
+                body().jsonPath().getObject("data", User.class);
+
+        assertThat(user.getEmail(), containsString("reqres.in"));
+        assertThat(user.getName(), is("Janet"));
+        assertThat(user.getLastName(), is("Weaver"));
+
+    }
+
 
     private int getExpectedPerPage(int page) {
         int expectedPerPage = given().
