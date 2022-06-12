@@ -30,7 +30,6 @@ public class UserTest extends BaseTest {
         user.setName("morpheus");
         user.setJob("leader");
         given().
-                contentType(ContentType.JSON).
                body(user).
         when().
                 post("/users").
