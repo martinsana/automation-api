@@ -3,8 +3,10 @@
  */
 package automation.api;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -13,6 +15,11 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 
 public class AppTest {
+    @BeforeClass
+    public static void setup() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+    }
+
     @Test public void testListUserData() {
         when().
                 get("https://reqres.in/api/users?page=2").
@@ -23,7 +30,7 @@ public class AppTest {
     }
 
     @Test public void testCreateUser() {
-        given().log().all().
+        given().
                 contentType(ContentType.JSON).
                body("{\n" +
                        "    \"name\": \"morpheus\",\n" +
