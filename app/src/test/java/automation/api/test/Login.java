@@ -29,9 +29,9 @@ public class Login extends BaseTest{
 
         given().
                 body(user).
-                when().
+        when().
                 post(LOGIN_USER_ENDPOINT).
-                then().
+        then().
                 body("error", is("Missing password"));
 
     }

@@ -7,6 +7,9 @@ import automation.api.domain.User;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -20,7 +23,7 @@ public class UserTest extends BaseTest {
 
     @Test public void testListUserData() {
         given().
-                params("page", "2").
+                param("page", "2").
         when().
                 get(LIST_USER_ENDPOINT).
         then().
@@ -30,9 +33,9 @@ public class UserTest extends BaseTest {
     }
 
     @Test public void testCreateUser() {
-        User user = new User();
-        user.setName("morpheus");
-        user.setJob("leader");
+        Map<String, String> user = new HashMap<>();
+        user.put("name", "morpheus");
+        user.put("job", "leader");
         given().
                body(user).
         when().
@@ -48,7 +51,7 @@ public class UserTest extends BaseTest {
         int expectedPerPage = getExpectedPerPage(page);
 
         given().
-                params("page", page).
+                param("page", page).
         when().
                 get(LIST_USER_ENDPOINT).
         then().
@@ -80,13 +83,13 @@ public class UserTest extends BaseTest {
 
     private int getExpectedPerPage(int page) {
         int expectedPerPage = given().
-                    params("page", page).
-                when().
-                    get(LIST_USER_ENDPOINT).
-                then().
-                    statusCode(HttpStatus.SC_OK).
-                extract().
-                    path("per_page");
+                param("page", page).
+        when().
+                get(LIST_USER_ENDPOINT).
+        then().
+                statusCode(HttpStatus.SC_OK).
+        extract().
+                path("per_page");
         return expectedPerPage;
     }
 
