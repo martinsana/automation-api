@@ -4,7 +4,6 @@
 package automation.api.test;
 
 import automation.api.domain.User;
-import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 
@@ -40,6 +39,21 @@ public class UserTest extends BaseTest {
         then().
                 statusCode(HttpStatus.SC_CREATED).
                 body("name", is("morpheus"));
+
+    }
+
+    @Test public void testCheckPerPageSize() {
+        given().
+                params("page", "2").
+        when().
+                get(LIST_USER_ENDPOINT).
+        then().
+                statusCode(HttpStatus.SC_OK).
+                body(
+                        "page", is(2),
+                        "data.size()", is(6),
+                        "data.findAll { it.avatar.startsWith('https://reqres.in') }.size()", is(6)
+                );
 
     }
 
