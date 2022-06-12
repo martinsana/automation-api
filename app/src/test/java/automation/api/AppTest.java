@@ -3,12 +3,21 @@
  */
 package automation.api;
 
+import org.apache.http.HttpStatus;
 import org.junit.Test;
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 
 public class AppTest {
-    @Test public void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+    @Test public void testListUserData() {
+        when().
+                get("https://reqres.in/api/users?page=2").
+        then().
+                statusCode(HttpStatus.SC_OK).
+                body("page", is(2)).
+                body("data", is(notNullValue()));
     }
 }
