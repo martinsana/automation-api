@@ -3,6 +3,7 @@
  */
 package automation.api;
 
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
@@ -20,4 +21,20 @@ public class AppTest {
                 body("page", is(2)).
                 body("data", is(notNullValue()));
     }
+
+    @Test public void testCreateUser() {
+        given().log().all().
+                contentType(ContentType.JSON).
+               body("{\n" +
+                       "    \"name\": \"morpheus\",\n" +
+                       "    \"job\": \"leader\"\n" +
+                       "}").
+        when().
+                post("https://reqres.in/api/users").
+        then().
+                statusCode(HttpStatus.SC_CREATED).
+                body("name", is("morpheus"));
+
+    }
+
 }
