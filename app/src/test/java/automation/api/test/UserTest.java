@@ -43,18 +43,33 @@ public class UserTest extends BaseTest {
     }
 
     @Test public void testCheckPerPageSize() {
+        int page = 2;
+        int expectedPerPage = getExpectedPerPage(page);
+
         given().
-                params("page", "2").
+                params("page", page).
         when().
                 get(LIST_USER_ENDPOINT).
         then().
                 statusCode(HttpStatus.SC_OK).
                 body(
                         "page", is(2),
-                        "data.size()", is(6),
-                        "data.findAll { it.avatar.startsWith('https://reqres.in') }.size()", is(6)
+                        "data.size()", is(expectedPerPage),
+                        "data.findAll { it.avatar.startsWith('https://reqres.in') }.size()", is(expectedPerPage)
                 );
 
+    }
+
+    private int getExpectedPerPage(int page) {
+        int expectedPerPage = given().
+                    params("page", page).
+                when().
+                    get(LIST_USER_ENDPOINT).
+                then().
+                    statusCode(HttpStatus.SC_OK).
+                extract().
+                    path("per_page");
+        return expectedPerPage;
     }
 
 }
