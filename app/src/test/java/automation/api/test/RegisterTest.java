@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.is;
 
 public class RegisterTest extends BaseTest {
 
+    private static final String REGISTER_USER_ENDPOINT = "/register";
 
     @Test
     public void testMissingPassword() {
@@ -19,7 +20,7 @@ public class RegisterTest extends BaseTest {
         given().
                 body(user).
         when().
-                post("/register").
+                post(REGISTER_USER_ENDPOINT).
         then().
                 statusCode(HttpStatus.SC_BAD_REQUEST).
                 body("error", is("Missing password"));

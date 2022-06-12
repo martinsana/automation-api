@@ -14,11 +14,15 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class UserTest extends BaseTest {
 
+    private static final String LIST_USER_ENDPOINT = "/users";
+    private static final String CREATE_USER_ENDPOINT = "/users";
+
+
     @Test public void testListUserData() {
         given().
                 params("page", "2").
         when().
-                get("/users").
+                get(LIST_USER_ENDPOINT).
         then().
                 statusCode(HttpStatus.SC_OK).
                 body("page", is(2)).
@@ -32,7 +36,7 @@ public class UserTest extends BaseTest {
         given().
                body(user).
         when().
-                post("/users").
+                post(CREATE_USER_ENDPOINT).
         then().
                 statusCode(HttpStatus.SC_CREATED).
                 body("name", is("morpheus"));
